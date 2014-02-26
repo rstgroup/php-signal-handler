@@ -43,7 +43,11 @@ static  PHP_GINIT_FUNCTION(signal_handler);
 const zend_function_entry signal_handler_functions[] = {
 	PHP_FE(attach_signal, NULL)
 	PHP_FE(detach_signal, NULL)
-	PHP_FE_END	/* Must be the last line in signal_handler_functions[] */
+	#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION == 3 && PHP_RELEASE_VERSION >= 7) || (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 4) || (PHP_MAJOR_VERSION > 5)
+		PHP_FE_END
+	#else
+		{NULL,NULL,NULL}
+	#endif
 };
 /* }}} */
 
