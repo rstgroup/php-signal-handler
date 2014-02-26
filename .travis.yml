@@ -10,7 +10,7 @@ before_script:
   - sh -c "phpize && ./configure && make"
 
 script:
-  - sh -c "make test | tee result.txt"
+  - sh -c "TEST_PHP_ARGS="-qTEST_PHP_ARGS='-q' make test | tee result.txt"
   - sh test-report.sh
 
 notifications:

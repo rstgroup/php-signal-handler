@@ -21,23 +21,23 @@ if test "$PHP_SIGNAL_HANDLER" != "no"; then
   dnl Write more examples of tests here...
 
   dnl # --with-signal_handler -> check with-path
-  dnl SEARCH_PATH="/usr/local /usr"     # you might want to change this
-  dnl SEARCH_FOR="/include/signal_handler.h"  # you most likely want to change this
-  dnl if test -r $PHP_SIGNAL_HANDLER/$SEARCH_FOR; then # path given as parameter
-  dnl   SIGNAL_HANDLER_DIR=$PHP_SIGNAL_HANDLER
-  dnl else # search default path list
-  dnl   AC_MSG_CHECKING([for signal_handler files in default path])
-  dnl   for i in $SEARCH_PATH ; do
-  dnl     if test -r $i/$SEARCH_FOR; then
-  dnl       SIGNAL_HANDLER_DIR=$i
-  dnl       AC_MSG_RESULT(found in $i)
-  dnl     fi
-  dnl   done
-  dnl fi
-  dnl
+  SEARCH_PATH="/usr/local /usr"     # you might want to change this
+  SEARCH_FOR="/include/signal_handler.h"  # you most likely want to change this
+  if test -r $PHP_SIGNAL_HANDLER/$SEARCH_FOR; then # path given as parameter
+     SIGNAL_HANDLER_DIR=$PHP_SIGNAL_HANDLER
+  else # search default path list
+    AC_MSG_CHECKING([for signal_handler files in default path])
+    for i in $SEARCH_PATH ; do
+      if test -r $i/$SEARCH_FOR; then
+         SIGNAL_HANDLER_DIR=$i
+         AC_MSG_RESULT(found in $i)
+      fi
+    done
+  fi
+  
   dnl if test -z "$SIGNAL_HANDLER_DIR"; then
-  dnl   AC_MSG_RESULT([not found])
-  dnl   AC_MSG_ERROR([Please reinstall the signal_handler distribution])
+  dnl  AC_MSG_RESULT([not found])
+  dnl  AC_MSG_ERROR([Please reinstall the signal_handler distribution])
   dnl fi
 
   dnl # --with-signal_handler -> add include path
