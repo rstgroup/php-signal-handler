@@ -1,0 +1,21 @@
+language: php
+
+php:
+  - 5.2
+  - 5.3
+  - 5.4
+  - 5.5
+
+services:
+  - rabbitmq
+
+before_script:
+  - sh -c "phpize && ./configure && make"
+
+script:
+  - sh -c "make test | tee result.txt"
+  - sh test-report.sh
+
+notifications:
+  email:
+    - kaczanowski.mateusz@gmail.com
