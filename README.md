@@ -44,5 +44,5 @@ kill -s SIGUSR1 `ps -ef | grep php | head -n1 | awk '{print $2}'`
 
 After that steps you should see:
 ```
-getInfo called with status 10\n
+getInfo called with status 10
 ```
