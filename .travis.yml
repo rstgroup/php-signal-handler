@@ -6,9 +6,6 @@ php:
   - 5.4
   - 5.5
 
-services:
-  - rabbitmq
-
 before_script:
   - sh -c "phpize && ./configure && make"
 
