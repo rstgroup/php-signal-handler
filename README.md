@@ -11,6 +11,13 @@ What's more it is possible to "catch" unix signal i.e. SIGTERM and then kill the
 ### Why don't you use pcntl_signal?
 If blocked method is being perfromed (such as consume in php-amqp) then it's not possible to run callback function by calling <i>pcntl_signal_dispatch();</i>. Simply it will not work becuse the script is being blocked by that method.
 
+### Compatibility
+Extension will work only where C function signal is available i.e UNIX systems.<br/>
+PHP versions supported: <br/>
+* PHP 5.4
+* PHP 5.3
+* PHP 5.2
+
 ### Example
 ```
 <?php
