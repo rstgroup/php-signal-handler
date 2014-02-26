@@ -19,7 +19,7 @@ PHP versions supported: <br/>
 * PHP 5.2
 
 ### Example
-```
+```php
 <?php
 
 function getInfo($noStatus){
