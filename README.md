@@ -1,4 +1,4 @@
-PHP Signal Handler
+PHP Signal Handler [![Build Status](https://travis-ci.org/mkaczanowski/php-signal-handler.png?branch=master)](https://travis-ci.org/RST-com-pl/php-signal-handler)
 ====================
 
 Extension uses C <b>signal</b> function (from <signal.h>) to call previously defined callback, if appropriate signal has arrived (i.e SIGUSR1).
