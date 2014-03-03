@@ -1,0 +1,13 @@
+// $Id$
+// vim:ft=javascript
+
+// If your extension references something external, use ARG_WITH
+// ARG_WITH("signal_handler", "for signal_handler support", "no");
+
+// Otherwise, use ARG_ENABLE
+// ARG_ENABLE("signal_handler", "enable signal_handler support", "no");
+
+if (PHP_SIGNAL_HANDLER != "no") {
+	EXTENSION("signal_handler", "signal_handler.c");
+}
+
