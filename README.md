@@ -15,6 +15,8 @@ If blocked method is being perfromed (such as consume in php-amqp) then it's not
 ### Compatibility
 Extension will work only where C function signal is available i.e UNIX systems.<br/>
 PHP versions supported: <br/>
+* PHP 5.6
+* PHP 5.5
 * PHP 5.4
 * PHP 5.3
 * PHP 5.2
