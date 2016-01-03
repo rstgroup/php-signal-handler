@@ -10,7 +10,7 @@ Could be used with <b>php-amqp</b> (https://github.com/pdezwart/php-amqp) to pri
 What's more it is possible to "catch" unix signal i.e. SIGTERM and then kill the process nicely (program won't stop untill all operations are completed). It is very useful if script operates on sensitive data which cannot be damaged.
 
 ### Why don't you use pcntl_signal?
-If blocked method is being perfromed (such as consume in php-amqp) then it's not possible to run callback function by calling <i>pcntl_signal_dispatch();</i>. Simply it will not work becuse the script is being blocked by that method.
+If blocked method is being performed (such as consume in php-amqp) then it's not possible to run callback function by calling <i>pcntl_signal_dispatch();</i>. Simply it will not work becuse the script is being blocked by that method.
 
 ### Compatibility
 Extension will work only where C function signal is available i.e UNIX systems.<br/>
