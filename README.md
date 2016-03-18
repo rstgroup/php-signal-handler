@@ -6,14 +6,14 @@ Extension uses C <b>signal</b> function (from <signal.h>) to call previously def
 
 ### When should I use it?
 
-Could be used with <b>php-amqp</b> (https://github.com/pdezwart/php-amqp) to print actual worker/consumer status (ie. message stats, last operation performed etc.) <br />
-What's more it is possible to "catch" unix signal i.e. SIGTERM and then kill the process nicely (program won't stop untill all operations are completed). It is very useful if script operates on sensitive data which cannot be damaged.
+Could be used with <b>[php-amqp](https://github.com/pdezwart/php-amqp)</b> to print the actual worker/consumer status (ie. message stats, last operation performed etc.) <br />
+What's more it is possible to "catch" a unix signal i.e. SIGTERM and then kill the process nicely (program won't stop untill all operations are completed). It is very useful if script operates on sensitive data which cannot be damaged.
 
 ### Why don't you use pcntl_signal?
-If blocked method is being performed (such as consume in php-amqp) then it's not possible to run callback function by calling <i>pcntl_signal_dispatch();</i>. Simply it will not work becuse the script is being blocked by that method.
+If a blocking method (such as ```AMQPQueue::consume()``` from [php-amqp](https://github.com/pdezwart/php-amqp)) is holding the processing thread,  then you won't be able to call <i>[pcntl_signal_dispatch()](http://php.net/manual/en/function.pcntl-signal-dispatch.php)</i> and trigger the callbacks registered with <i>[pcntl_signal()](http://php.net/manual/en/function.pcntl-signal.php)</i>.
 
 ### Compatibility
-Extension will work only where C function signal is available i.e UNIX systems.<br/>
+Extension will work only if C function ```signal``` is available (only on UNIX systems).<br/>
 PHP versions supported: <br/>
 * PHP 5.6
 * PHP 5.5
