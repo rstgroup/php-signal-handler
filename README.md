@@ -1,4 +1,4 @@
-PHP Signal Handler 
+PHP Signal Handler
 ====================
 [![Build Status](https://travis-ci.org/rstgroup/php-signal-handler.png?branch=master)](https://travis-ci.org/rstgroup/php-signal-handler)
 
@@ -19,7 +19,6 @@ PHP versions supported: <br/>
 * PHP 5.5
 * PHP 5.4
 * PHP 5.3
-* PHP 5.2
 
 ### Example
 ```php
