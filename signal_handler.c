@@ -200,8 +200,6 @@ PHP_FUNCTION(attach_signal)
 
 	/* Check if given parameter is callable */
 	#if ZEND_MODULE_API_NO <= 20060613
-	if (!zend_is_callable(handle, 0, func_name)) {
-	#elseif PHP_MAJOR_VERSION >= 7
 	if (!zend_is_callable(handle, 0, &func_name)) {
 	#else
 	if (!zend_is_callable(handle, 0, &func_name TSRMLS_CC)) {
