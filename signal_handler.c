@@ -232,6 +232,7 @@ PHP_FUNCTION(attach_signal)
 	/* Add the function name to our signal table */
 	#if PHP_MAJOR_VERSION >= 7
 	zend_hash_index_update(&SIGNAL_HANDLER_G(php_signal_table), signo, handle);
+	zval_add_ref(handle);
 	#else
 	zend_hash_index_update(&SIGNAL_HANDLER_G(php_signal_table), signo, (void **) &handle, sizeof(zval *), (void **) &dest_handle);
  	if (dest_handle) zval_add_ref(dest_handle);
