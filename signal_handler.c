@@ -38,6 +38,8 @@
 #if PHP_MAJOR_VERSION < 7
 #define _DECLARE_ZVAL(name) zval * name
 #define hp_ptr_dtor(val) zval_ptr_dtor(&val);
+#define zend_string_release(str) efree(str)
+#define ZSTR_VAL(str) (str)
 #else
 #include <zend_string.h>
 #define _DECLARE_ZVAL(name) zval name ## _v; zval * name = &name ## _v
@@ -205,21 +207,12 @@ PHP_FUNCTION(attach_signal)
 	if (!zend_is_callable(handle, 0, &func_name TSRMLS_CC)) {
 	#endif
 
-		#if PHP_MAJOR_VERSION >= 7
 		php_error_docref(NULL TSRMLS_CC, E_WARNING, "%s is not a callable function name error", ZSTR_VAL(func_name));
 		zend_string_release(func_name);
-		#else
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "%s is not a callable function name error", func_name);
-		efree(func_name);
-		#endif
 		RETURN_FALSE;
 	}
 
-	#if PHP_MAJOR_VERSION >= 7
 	zend_string_release(func_name);
-	#else
-	efree(func_name);
-	#endif
 
 	/* Set the handler for the signal */
 	if (signal(signo, php_signal_callback_handler) == SIG_ERR) {
