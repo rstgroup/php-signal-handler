@@ -49,11 +49,22 @@
 ZEND_DECLARE_MODULE_GLOBALS(signal_handler);
 static  PHP_GINIT_FUNCTION(signal_handler);
 
+/* {{{ argument information */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_signalhandler_attach_signal, 0, 0, 1)
+	    ZEND_ARG_TYPE_INFO(0, signal, IS_LONG, 0)
+	    ZEND_ARG_TYPE_INFO(0, callback, IS_CALLABLE, 0)
+	ZEND_END_ARG_INFO()
+
+	ZEND_BEGIN_ARG_INFO_EX(arginfo_signalhandler_detach_signal, 0, 0, 2)
+	    ZEND_ARG_TYPE_INFO(0, signal, IS_LONG, 0)
+	ZEND_END_ARG_INFO()
+/* }}} */
+
 /* {{{ signal_handler_functions[]
  */
 const zend_function_entry signal_handler_functions[] = {
-	PHP_FE(attach_signal, NULL)
-	PHP_FE(detach_signal, NULL)
+	PHP_FE(attach_signal, arginfo_signalhandler_attach_signal)
+	PHP_FE(detach_signal, arginfo_signalhandler_detach_signal)
 	#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION == 3 && PHP_RELEASE_VERSION >= 7) || (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 4) || (PHP_MAJOR_VERSION > 5)
 		PHP_FE_END
 	#else
@@ -145,8 +156,6 @@ PHP_MINFO_FUNCTION(signal_handler)
 
 void php_signal_callback_handler(int signo)
 {
-	TSRMLS_FETCH();
-
 	#if PHP_MAJOR_VERSION >= 7
 	zval *handle;
 	_DECLARE_ZVAL(retval);
@@ -159,7 +168,7 @@ void php_signal_callback_handler(int signo)
 	MAKE_STD_ZVAL(param);
 	if(zend_hash_index_find(&SIGNAL_HANDLER_G(php_signal_table), signo, (void **) &handle) == FAILURE){
 	#endif
-		php_error_docref(NULL TSRMLS_CC, E_ERROR, "Callback function not found for signo: %d", signo);
+		php_error_docref(NULL, E_ERROR, "Callback function not found for signo: %d", signo);
 		return;
 	}
 
@@ -168,9 +177,9 @@ void php_signal_callback_handler(int signo)
 
 	/* Call the function */
 	#if PHP_MAJOR_VERSION >= 7
-	call_user_function(EG(function_table), NULL, handle, retval, 1, param TSRMLS_CC);
+	call_user_function(EG(function_table), NULL, handle, retval, 1, param);
 	#else
-	call_user_function(EG(function_table), NULL, *handle, retval, 1, &param TSRMLS_CC);
+	call_user_function(EG(function_table), NULL, *handle, retval, 1, &param);
 	#endif
 
 	hp_ptr_dtor(param);
@@ -190,13 +199,13 @@ PHP_FUNCTION(attach_signal)
 	#endif
 	long signo;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lz", &signo, &handle) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "lz", &signo, &handle) == FAILURE) {
 		return;
 	}
 
 	/* Check signal code */
 	if (signo < 1 || signo > 32) {
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Invalid signal");
+		php_error_docref(NULL, E_WARNING, "Invalid signal");
 		RETURN_FALSE;
 	}
 
@@ -204,10 +213,10 @@ PHP_FUNCTION(attach_signal)
 	#if ZEND_MODULE_API_NO <= 20060613
 	if (!zend_is_callable(handle, 0, &func_name)) {
 	#else
-	if (!zend_is_callable(handle, 0, &func_name TSRMLS_CC)) {
+	if (!zend_is_callable(handle, 0, &func_name)) {
 	#endif
 
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "%s is not a callable function name error", ZSTR_VAL(func_name));
+		php_error_docref(NULL, E_WARNING, "%s is not a callable function name error", ZSTR_VAL(func_name));
 		zend_string_release(func_name);
 		RETURN_FALSE;
 	}
@@ -216,7 +225,7 @@ PHP_FUNCTION(attach_signal)
 
 	/* Set the handler for the signal */
 	if (signal(signo, php_signal_callback_handler) == SIG_ERR) {
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "An error occurred while setting a signal handler for signo: %lu", signo);
+		php_error_docref(NULL, E_WARNING, "An error occurred while setting a signal handler for signo: %lu", signo);
 		RETURN_FALSE;
 	}
 
@@ -239,13 +248,13 @@ PHP_FUNCTION(detach_signal)
 {
 	long signo;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &signo) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &signo) == FAILURE) {
 		return;
 	}
 
 	/* Check signal code */
 	if (signo < 1 || signo > 32) {
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Invalid signal");
+		php_error_docref(NULL, E_WARNING, "Invalid signal");
 		RETURN_FALSE;
 	}
 
@@ -254,7 +263,7 @@ PHP_FUNCTION(detach_signal)
 		zend_hash_index_del(&SIGNAL_HANDLER_G(php_signal_table), signo);
 		RETURN_TRUE;
 	}else{
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Cannot detach signo: %lu", signo);
+		php_error_docref(NULL, E_WARNING, "Cannot detach signo: %lu", signo);
 		RETURN_FALSE;
 	}
 }
